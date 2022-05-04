@@ -12,7 +12,7 @@ inputs:
   type: "string"
   required: true
 experiment:
-  name: "Copy of Gateway is loosely coupled from Hot Deals"
+  name: "Gateway is loosely coupled from Hot Deals"
   team: "{{teamKey}}"
   hypothesis: "Shop is available for customers when Hot Deals can not be reached from\
     \ Gateway"
