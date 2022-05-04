@@ -1,0 +1,61 @@
+--- !<experiment>
+name: "demo/SHOP/SHOP-337"
+version: "1"
+type: "experiment"
+description: "Shop is available for customers when Hot Deals can not be reached from\
+  \ Gateway"
+inputs:
+- name: "teamKey"
+  type: "string"
+  required: true
+- name: "environmentName"
+  type: "string"
+  required: true
+experiment:
+  name: "Copy of Gateway is loosely coupled from Hot Deals"
+  team: "{{teamKey}}"
+  hypothesis: "Shop is available for customers when Hot Deals can not be reached from\
+    \ Gateway"
+  environment: "{{environmentName}}"
+  lanes:
+  - steps:
+    - !<wait>
+      ignoreFailure: false
+      parameters:
+        duration: "10s"
+    - !<attack>
+      ignoreFailure: false
+      parameters:
+        duration: "30s"
+        hostname: ""
+        port: ""
+        ip: ""
+      attackType: "container-network-blackhole-attack"
+      radius:
+        targetType: "container"
+        query:
+          operator: "AND"
+          predicates:
+          - key: "k8s.deployment"
+            operator: "EQUALS"
+            values:
+            - "hot-deals"
+        list: []
+        maximum: 4
+  - steps:
+    - !<action>
+      ignoreFailure: false
+      parameters:
+        headers: []
+        method: "GET"
+        successRate: 100
+        maxConcurrent: 5
+        requestsPerSecond: 1
+        body: ""
+        url: "http://k8s.demo.steadybit.io/products"
+        duration: "60s"
+        followRedirects: false
+        readTimeout: "5s"
+        connectTimeout: "5s"
+        responsesContains: ""
+      actionType: "check:http"
