@@ -4,14 +4,12 @@ type: policy
 tasks:
   - name: >-
       steadybit/definitions/kubernetes/deployments/experiments/recovery-of-single-container
-    version: 0.3.3
     forEach:
       iterables:
         - container
       define:
         containerName: '{{container.name}}'
   - name: steadybit/definitions/kubernetes/deployments/weak-spots/readiness-probe
-    version: 0.3.3
     forEach:
       iterables:
         - container
